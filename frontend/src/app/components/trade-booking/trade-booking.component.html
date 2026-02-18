@@ -1,0 +1,90 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Book Trade</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Booking your trade...</p>
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger">
+            <h5 class="alert-heading">Trade Booking Failed</h5>
+            <p>{{ error }}</p>
+            <hr>
+            <button class="btn btn-outline-danger" (click)="requestNewQuote()">
+              Request New Quote
+            </button>
+          </div>
+
+          <div *ngIf="trade && !loading" class="text-center">
+            <div class="mb-4">
+              <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+            </div>
+            <h3 class="text-success mb-4">Trade Booked Successfully!</h3>
+            
+            <div class="card">
+              <div class="card-body text-start">
+                <h5 class="card-title mb-3">Trade Details</h5>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Trade ID:</strong></div>
+                  <div class="col-6">{{ trade.tradeId }}</div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Quote ID:</strong></div>
+                  <div class="col-6">{{ trade.quoteId }}</div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Currency Pair:</strong></div>
+                  <div class="col-6">{{ trade.currencyPair }}</div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Side:</strong></div>
+                  <div class="col-6">
+                    <span [class.badge]="true" 
+                          [class.bg-success]="trade.side === 'BUY'" 
+                          [class.bg-danger]="trade.side === 'SELL'">
+                      {{ trade.side }}
+                    </span>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Amount:</strong></div>
+                  <div class="col-6">{{ trade.amount | number:'1.2-4' }}</div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Rate:</strong></div>
+                  <div class="col-6">{{ trade.rate | number:'1.6-6' }}</div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Status:</strong></div>
+                  <div class="col-6">
+                    <span class="badge bg-info">{{ trade.status }}</span>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-6"><strong>Booked At:</strong></div>
+                  <div class="col-6">{{ trade.bookedAt | date:'medium' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <button class="btn btn-primary me-2" (click)="viewTradeHistory()">
+                View Trade History
+              </button>
+              <button class="btn btn-outline-primary" (click)="requestNewQuote()">
+                Request New Quote
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+# Backend
+backend/target/
+backend/*.log
+
+# Frontend
+frontend/dist/
+frontend/node_modules/
+frontend/.angular/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# Temp
+/tmp/
+*.tmp
