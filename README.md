@@ -1,4 +1,27 @@
+
 # FX Quote & Trade Portal (Demo)
+
+---
+<p align="right">
+<b>Live Demo:</b> <a href="https://your-demo-url.com">https://your-demo-url.com</a> <!-- Replace with your actual demo URL -->
+&nbsp;|&nbsp;
+<b>Video Walkthrough:</b> <a href="https://youtu.be/your-demo-video">YouTube</a> <!-- Replace or remove if not available -->
+</p>
+
+<details>
+<summary><b>Project highlights</b></summary>
+
+- Request real-time (simulated) FX quotes
+- Book trades at quoted rates (with expiry)
+- View trade history with filters and pagination
+
+<b>Stack:</b> Java 17 (Spring Boot), Angular 21, PostgreSQL, Docker, CI/CD
+
+<b>Quick start:</b>
+1. Try the <a href="https://your-demo-url.com">live demo</a>
+2. Or clone and run locally (see below)
+
+</details>
 
 **Educational demo project — not affiliated with any bank.**
 
