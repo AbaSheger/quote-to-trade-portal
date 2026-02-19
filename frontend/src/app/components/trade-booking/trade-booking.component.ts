@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FxPortalService } from '../../services/fx-portal.service';
@@ -19,7 +19,8 @@ export class TradeBookingComponent implements OnInit {
 
   constructor(
     private fxPortalService: FxPortalService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
@@ -43,12 +44,16 @@ export class TradeBookingComponent implements OnInit {
 
     this.fxPortalService.bookTrade({ quoteId: this.quote.quoteId }).subscribe({
       next: (response) => {
+        console.log('Trade booking response:', response);
         this.trade = response;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
+        console.error('Trade booking error:', err);
         this.error = err.error?.message || 'Failed to book trade';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

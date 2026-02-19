@@ -37,16 +37,32 @@ export class FxPortalService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    if (currencyPair) {
-      params = params.set('currencyPair', currencyPair);
+    // Only add params if they are non-empty and non-blank
+    if (currencyPair && currencyPair.trim() !== '') {
+      params = params.append('currencyPair', currencyPair);
     }
-    if (side) {
-      params = params.set('side', side);
+    if (side && side.trim() !== '') {
+      params = params.append('side', side);
     }
-    if (status) {
-      params = params.set('status', status);
+    if (status && status.trim() !== '') {
+      params = params.append('status', status);
     }
 
+    // Remove any params with empty string values (defensive, in case)
+    params = this.removeEmptyParams(params);
+
     return this.http.get<PageResponse<TradeResponse>>(`${this.apiUrl}/trades`, { params });
+  }
+
+  // Utility to remove empty string params (defensive)
+  private removeEmptyParams(params: HttpParams): HttpParams {
+    let newParams = new HttpParams();
+    params.keys().forEach(key => {
+      const value = params.get(key);
+      if (value !== null && value !== undefined && value.trim() !== '') {
+        newParams = newParams.append(key, value);
+      }
+    });
+    return newParams;
   }
 }
