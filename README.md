@@ -103,7 +103,8 @@ quote-to-trade-portal/
 ### Prerequisites
 
 - Docker and Docker Compose
-- (Optional) Java 17 and Maven for local backend development
+- (Optional) Java 21+ (or any JDK ≥ 17) and Maven for local backend development
+  - A `.sdkmanrc` file is included — if you use [SDKMAN](https://sdkman.io/), run `sdk env` to auto-select the correct JDK
 - (Optional) Node.js 24+ and npm for local frontend development
 
 ### Quick Start with Docker
