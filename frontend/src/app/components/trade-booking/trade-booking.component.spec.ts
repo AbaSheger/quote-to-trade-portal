@@ -70,7 +70,7 @@ describe('TradeBookingComponent', () => {
     component.ngOnInit();
 
     expect(fxPortalService.bookTrade).not.toHaveBeenCalled();
-    expect(pendingQuoteService.clear).toHaveBeenCalled();
-    expect(component.error).toContain('expired');
+    expect(pendingQuoteService.clear).not.toHaveBeenCalled();
+    expect(component.expiredWarning).toContain('expired');
   });
 });

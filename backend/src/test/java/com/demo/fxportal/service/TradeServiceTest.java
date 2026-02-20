@@ -3,6 +3,7 @@ package com.demo.fxportal.service;
 import com.demo.fxportal.dto.TradeRequest;
 import com.demo.fxportal.dto.TradeResponse;
 import com.demo.fxportal.model.Quote;
+import com.demo.fxportal.model.Side;
 import com.demo.fxportal.model.Trade;
 import com.demo.fxportal.repository.QuoteRepository;
 import com.demo.fxportal.repository.TradeRepository;
@@ -47,7 +48,7 @@ class TradeServiceTest {
         validQuote = Quote.builder()
                 .id(quoteId)
                 .currencyPair("EUR/USD")
-                .side(Quote.Side.BUY)
+                .side(Side.BUY)
                 .amount(new BigDecimal("10000.00"))
                 .rate(new BigDecimal("1.0850"))
                 .expiresAt(LocalDateTime.now().plusSeconds(30))
@@ -57,7 +58,7 @@ class TradeServiceTest {
         expiredQuote = Quote.builder()
                 .id(quoteId)
                 .currencyPair("EUR/USD")
-                .side(Quote.Side.BUY)
+                .side(Side.BUY)
                 .amount(new BigDecimal("10000.00"))
                 .rate(new BigDecimal("1.0850"))
                 .expiresAt(LocalDateTime.now().minusSeconds(1))
@@ -68,7 +69,7 @@ class TradeServiceTest {
                 .id(UUID.randomUUID())
                 .quoteId(quoteId)
                 .currencyPair("EUR/USD")
-                .side(Trade.Side.BUY)
+                .side(Side.BUY)
                 .amount(new BigDecimal("10000.00"))
                 .rate(new BigDecimal("1.0850"))
                 .status(Trade.Status.BOOKED)
@@ -90,7 +91,7 @@ class TradeServiceTest {
         assertThat(response).isNotNull();
         assertThat(response.getQuoteId()).isEqualTo(quoteId);
         assertThat(response.getCurrencyPair()).isEqualTo("EUR/USD");
-        assertThat(response.getSide()).isEqualTo(Trade.Side.BUY);
+        assertThat(response.getSide()).isEqualTo(Side.BUY);
         assertThat(response.getAmount()).isEqualTo(new BigDecimal("10000.00"));
         assertThat(response.getStatus()).isEqualTo(Trade.Status.BOOKED);
 

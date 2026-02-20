@@ -3,6 +3,7 @@ package com.demo.fxportal.service;
 import com.demo.fxportal.dto.QuoteRequest;
 import com.demo.fxportal.dto.QuoteResponse;
 import com.demo.fxportal.model.Quote;
+import com.demo.fxportal.model.Side;
 import com.demo.fxportal.repository.QuoteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,14 +36,14 @@ class QuoteServiceTest {
     void setUp() {
         quoteRequest = QuoteRequest.builder()
                 .currencyPair("EUR/USD")
-                .side(Quote.Side.BUY)
+                .side(Side.BUY)
                 .amount(new BigDecimal("10000.00"))
                 .build();
 
         savedQuote = Quote.builder()
                 .id(UUID.randomUUID())
                 .currencyPair("EUR/USD")
-                .side(Quote.Side.BUY)
+                .side(Side.BUY)
                 .amount(new BigDecimal("10000.00"))
                 .rate(new BigDecimal("1.0850"))
                 .expiresAt(LocalDateTime.now().plusSeconds(30))
@@ -62,7 +63,7 @@ class QuoteServiceTest {
         assertThat(response).isNotNull();
         assertThat(response.getQuoteId()).isEqualTo(savedQuote.getId());
         assertThat(response.getCurrencyPair()).isEqualTo("EUR/USD");
-        assertThat(response.getSide()).isEqualTo(Quote.Side.BUY);
+        assertThat(response.getSide()).isEqualTo(Side.BUY);
         assertThat(response.getAmount()).isEqualTo(new BigDecimal("10000.00"));
         assertThat(response.getRate()).isNotNull();
         assertThat(response.getExpiresAt()).isNotNull();
