@@ -3,6 +3,7 @@ package com.demo.fxportal.service;
 import com.demo.fxportal.dto.TradeRequest;
 import com.demo.fxportal.dto.TradeResponse;
 import com.demo.fxportal.model.Quote;
+import com.demo.fxportal.model.Side;
 import com.demo.fxportal.model.Trade;
 import com.demo.fxportal.repository.QuoteRepository;
 import com.demo.fxportal.repository.TradeRepository;
@@ -39,10 +40,14 @@ public class TradeService {
             throw new IllegalStateException("Quote has expired");
         }
 
+        if (tradeRepository.existsByQuoteId(request.getQuoteId())) {
+            throw new IllegalStateException("A trade has already been booked for this quote");
+        }
+
         Trade trade = Trade.builder()
                 .quoteId(quote.getId())
                 .currencyPair(quote.getCurrencyPair())
-                .side(Trade.Side.valueOf(quote.getSide().name()))
+                .side(quote.getSide())
                 .amount(quote.getAmount())
                 .rate(quote.getRate())
                 .status(Trade.Status.BOOKED)
@@ -57,7 +62,7 @@ public class TradeService {
     @Transactional(readOnly = true)
     public Page<TradeResponse> getTradeHistory(
             Optional<String> currencyPair,
-            Optional<Trade.Side> side,
+            Optional<Side> side,
             Optional<Trade.Status> status,
             Optional<LocalDateTime> fromDate,
             Optional<LocalDateTime> toDate,

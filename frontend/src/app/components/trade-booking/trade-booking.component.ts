@@ -39,15 +39,11 @@ export class TradeBookingComponent implements OnInit {
     }
 
     if (this.isQuoteExpired(this.quote)) {
-      // Don't block booking on the frontend when quote expiry is reached.
-      // Show a warning but attempt to book — backend will enforce final validation.
-      this.expiredWarning = 'Quote has expired, attempting to book anyway.';
+      this.expiredWarning = 'This quote has expired. Booking may be rejected by the server.';
     }
-
-    this.bookTrade();
   }
 
-  bookTrade() {
+  confirmBooking() {
     if (!this.quote) return;
 
     this.loading = true;
@@ -77,10 +73,6 @@ export class TradeBookingComponent implements OnInit {
   }
 
   private isQuoteExpired(quote: QuoteResponse): boolean {
-    const createdAt = Date.parse(quote.createdAt);
-    const expiresAt = Date.parse(quote.expiresAt);
-    const totalDuration = Math.max(0, expiresAt - createdAt);
-    const elapsed = Math.max(0, Date.now() - createdAt);
-    return elapsed >= totalDuration;
+    return Date.now() >= Date.parse(quote.expiresAt);
   }
 }

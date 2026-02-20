@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +20,6 @@ import java.util.Random;
 public class QuoteService {
 
     private final QuoteRepository quoteRepository;
-    private final Random random = new Random();
 
     @Transactional
     public QuoteResponse requestQuote(QuoteRequest request) {
@@ -71,7 +70,7 @@ public class QuoteService {
         }
 
         // Add random spread (-0.5% to +0.5%)
-        double spreadPercent = (random.nextDouble() - 0.5) * 0.01;
+        double spreadPercent = (ThreadLocalRandom.current().nextDouble() - 0.5) * 0.01;
         BigDecimal spread = baseRate.multiply(BigDecimal.valueOf(spreadPercent));
 
         return baseRate.add(spread).setScale(6, RoundingMode.HALF_UP);

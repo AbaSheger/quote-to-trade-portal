@@ -54,8 +54,6 @@ export class TradeHistoryComponent implements OnInit {
         this.totalPages = response.totalPages;
         this.totalElements = response.totalElements;
         this.loading = false;
-        // Debug log
-        console.log('Loaded trades:', this.trades);
       },
       error: (err) => {
         this.error = err.error?.message || 'Failed to load trade history';

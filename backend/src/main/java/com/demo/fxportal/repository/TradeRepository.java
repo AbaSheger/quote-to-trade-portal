@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface TradeRepository extends JpaRepository<Trade, UUID>, JpaSpecificationExecutor<Trade> {
+    boolean existsByQuoteId(UUID quoteId);
 }

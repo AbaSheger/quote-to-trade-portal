@@ -55,10 +55,6 @@ public class Trade {
         }
     }
 
-    public enum Side {
-        BUY, SELL
-    }
-
     public enum Status {
         BOOKED, SETTLED, CANCELLED
     }

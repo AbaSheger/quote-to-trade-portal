@@ -98,6 +98,6 @@ export class QuoteRequestComponent {
   }
 
   isExpired(): boolean {
-    return this.timeRemaining <= 0;
+    return this.quote !== null && this.timeRemaining <= 0;
   }
 }

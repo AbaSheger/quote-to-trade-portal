@@ -1,5 +1,6 @@
 package com.demo.fxportal.dto;
 
+import com.demo.fxportal.model.Side;
 import com.demo.fxportal.model.Trade;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class TradeResponse {
     private UUID tradeId;
     private UUID quoteId;
     private String currencyPair;
-    private Trade.Side side;
+    private Side side;
     private BigDecimal amount;
     private BigDecimal rate;
     private Trade.Status status;

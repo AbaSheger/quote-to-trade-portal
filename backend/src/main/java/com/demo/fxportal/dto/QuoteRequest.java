@@ -1,6 +1,6 @@
 package com.demo.fxportal.dto;
 
-import com.demo.fxportal.model.Quote;
+import com.demo.fxportal.model.Side;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +20,7 @@ public class QuoteRequest {
     private String currencyPair;
 
     @NotNull(message = "Side is required")
-    private Quote.Side side;
+    private Side side;
 
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "0.0001", inclusive = true, message = "Amount must be greater than 0")

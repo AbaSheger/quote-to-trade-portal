@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/quotes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @Tag(name = "Quotes", description = "FX Quote API")
 public class QuoteController {
 

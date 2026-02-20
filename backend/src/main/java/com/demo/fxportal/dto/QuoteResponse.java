@@ -1,6 +1,7 @@
 package com.demo.fxportal.dto;
 
 import com.demo.fxportal.model.Quote;
+import com.demo.fxportal.model.Side;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class QuoteResponse {
 
     private UUID quoteId;
     private String currencyPair;
-    private Quote.Side side;
+    private Side side;
     private BigDecimal amount;
     private BigDecimal rate;
     private LocalDateTime expiresAt;

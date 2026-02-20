@@ -52,7 +52,4 @@ public class Quote {
         return LocalDateTime.now().isAfter(expiresAt);
     }
 
-    public enum Side {
-        BUY, SELL
-    }
 }

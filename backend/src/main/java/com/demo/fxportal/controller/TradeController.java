@@ -2,12 +2,15 @@ package com.demo.fxportal.controller;
 
 import com.demo.fxportal.dto.TradeRequest;
 import com.demo.fxportal.dto.TradeResponse;
+import com.demo.fxportal.model.Side;
 import com.demo.fxportal.model.Trade;
 import com.demo.fxportal.service.TradeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -24,7 +28,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/trades")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@Validated
 @Tag(name = "Trades", description = "FX Trade API")
 public class TradeController {
 
@@ -44,7 +48,7 @@ public class TradeController {
             @RequestParam(required = false) Optional<String> currencyPair,
 
             @Parameter(description = "Filter by side (BUY or SELL)")
-            @RequestParam(required = false) Optional<Trade.Side> side,
+            @RequestParam(required = false) Optional<Side> side,
 
             @Parameter(description = "Filter by status (BOOKED, SETTLED, CANCELLED)")
             @RequestParam(required = false) Optional<Trade.Status> status,
@@ -56,10 +60,10 @@ public class TradeController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Optional<LocalDateTime> toDate,
 
             @Parameter(description = "Page number (0-indexed)")
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
 
-            @Parameter(description = "Page size")
-            @RequestParam(defaultValue = "20") int size,
+            @Parameter(description = "Page size (1-100)")
+            @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size,
 
             @Parameter(description = "Sort by field")
             @RequestParam(defaultValue = "bookedAt") String sortBy,
