@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FxPortalService } from '../../services/fx-portal.service';
+import { PendingQuoteService } from '../../services/pending-quote.service';
 import { QuoteResponse, TradeResponse } from '../../models/fx-portal.models';
 
 @Component({
@@ -20,12 +21,14 @@ export class TradeBookingComponent implements OnInit {
   constructor(
     private fxPortalService: FxPortalService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private pendingQuoteService: PendingQuoteService
   ) {
     const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.quote = navigation.extras.state['quote'];
-    }
+    this.quote =
+      navigation?.extras.state?.['quote'] ||
+      history.state?.quote ||
+      this.pendingQuoteService.get();
   }
 
   ngOnInit() {
@@ -33,6 +36,13 @@ export class TradeBookingComponent implements OnInit {
       this.router.navigate(['/quote-request']);
       return;
     }
+
+    if (this.isQuoteExpired(this.quote)) {
+      this.pendingQuoteService.clear();
+      this.error = 'Quote has expired. Please request a new quote.';
+      return;
+    }
+
     this.bookTrade();
   }
 
@@ -44,13 +54,12 @@ export class TradeBookingComponent implements OnInit {
 
     this.fxPortalService.bookTrade({ quoteId: this.quote.quoteId }).subscribe({
       next: (response) => {
-        console.log('Trade booking response:', response);
+        this.pendingQuoteService.clear();
         this.trade = response;
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Trade booking error:', err);
         this.error = err.error?.message || 'Failed to book trade';
         this.loading = false;
         this.cdr.detectChanges();
@@ -64,5 +73,9 @@ export class TradeBookingComponent implements OnInit {
 
   requestNewQuote() {
     this.router.navigate(['/quote-request']);
+  }
+
+  private isQuoteExpired(quote: QuoteResponse): boolean {
+    return Date.parse(quote.expiresAt) <= Date.now();
   }
 }
