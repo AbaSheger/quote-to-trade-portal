@@ -2,34 +2,19 @@
 # FX Quote & Trade Portal (Demo)
 
 ---
-<p align="right">
-<b>Live Demo:</b> <a href="https://your-demo-url.com">https://your-demo-url.com</a> <!-- Replace with your actual demo URL -->
-&nbsp;|&nbsp;
-<b>Video Walkthrough:</b> <a href="https://youtu.be/your-demo-video">YouTube</a> <!-- Replace or remove if not available -->
-</p>
 
-<details>
-<summary><b>Project highlights</b></summary>
 
-- Request real-time (simulated) FX quotes
-- Book trades at quoted rates (with expiry)
-- View trade history with filters and pagination
 
-<b>Stack:</b> Java 17 (Spring Boot), Angular 21, PostgreSQL, Docker, CI/CD
 
-<b>Quick start:</b>
-1. Try the <a href="https://your-demo-url.com">live demo</a>
-2. Or clone and run locally (see below)
-
-</details>
 
 **Educational demo project — not affiliated with any bank.**
 
-A full-stack demonstration project inspired by banking FX Sales frontend developer role requirements. This project showcases modern development practices, clean architecture, and DevOps automation.
+This is a full-stack demonstration project for a Foreign Exchange (FX) quote-to-trade workflow. It showcases modern development practices, clean architecture, and DevOps automation.
 
 ## 🎯 Project Overview
 
-This is a portfolio/demonstration project that implements a Foreign Exchange (FX) quote-to-trade workflow. It allows users to:
+
+The application allows users to:
 
 1. **Request FX Quotes**: Get real-time (simulated) exchange rates for currency pairs
 2. **Book Trades**: Execute trades based on valid quotes before they expire
@@ -40,17 +25,17 @@ This is a portfolio/demonstration project that implements a Foreign Exchange (FX
 ### Technology Stack
 
 **Backend:**
-- Java 17 (Spring Boot 3.2.2)
+- Java 17+ (Spring Boot)
 - Spring Data JPA
-- PostgreSQL 16
+- PostgreSQL
 - Flyway (Database migrations)
-- Maven 3
+- Maven
 - JUnit 5 + Mockito + Testcontainers (Testing)
 - OpenAPI/Swagger (API documentation)
 - Spring Boot Actuator (Health checks)
 
 **Frontend:**
-- Angular 21 (latest)
+- Angular 21
 - TypeScript
 - Bootstrap 5
 - RxJS
@@ -127,7 +112,7 @@ quote-to-trade-portal/
 
 - Docker and Docker Compose
 - (Optional) Java 21+ (or any JDK ≥ 17) and Maven for local backend development
-  - A `.sdkmanrc` file is included — if you use [SDKMAN](https://sdkman.io/), run `sdk env` to auto-select the correct JDK
+   - (If using SDKMAN, a `.sdkmanrc` file is included)
 - (Optional) Node.js 24+ and npm for local frontend development
 
 ### Quick Start with Docker
@@ -185,7 +170,7 @@ npm start
 npm run build
 
 # Run unit tests
-npm test -- --watch=false
+npm test
 ```
 
 ## 📊 Database Schema
@@ -263,8 +248,7 @@ cd frontend
 # Unit tests
 npm test
 
-# E2E tests (if configured)
-npm run e2e
+
 ```
 
 ## 🔒 Security Features
@@ -334,22 +318,21 @@ The GitHub Actions workflow includes:
 - ✅ Security scanning
 - ✅ Health checks
 
-## 🌟 Future Enhancements
 
-Potential improvements for this demo:
+## 🌟 Potential Future Enhancements
 
-- [ ] Authentication & Authorization (Spring Security + JWT)
-- [ ] WebSocket for real-time quote updates
-- [ ] Redis caching for quotes
-- [ ] Message queue (RabbitMQ/Kafka) for trade processing
-- [ ] Monitoring with Prometheus & Grafana
-- [ ] ELK stack for logging
-- [ ] Kubernetes deployment manifests
-- [ ] End-to-end testing with Cypress
-- [ ] GraphQL API alternative
-- [ ] Multi-currency calculator
-- [ ] Trade settlement workflow
-- [ ] Audit logging
+- Authentication & Authorization (Spring Security + JWT)
+- WebSocket for real-time quote updates
+- Redis caching for quotes
+- Message queue (RabbitMQ/Kafka) for trade processing
+- Monitoring with Prometheus & Grafana
+- ELK stack for logging
+- Kubernetes deployment manifests
+- End-to-end testing with Cypress
+- GraphQL API alternative
+- Multi-currency calculator
+- Trade settlement workflow
+- Audit logging
 
 ## 📝 Notes
 
@@ -361,9 +344,6 @@ Potential improvements for this demo:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
-
-Created as a portfolio demonstration project.
 
 ---
 
