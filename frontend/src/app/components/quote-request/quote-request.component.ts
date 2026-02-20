@@ -85,16 +85,14 @@ export class QuoteRequestComponent {
   }
 
   bookTrade() {
-    if (!this.quote || this.timeRemaining <= 0) return;
-
+    if (!this.quote) return;
     this.pendingQuoteService.save(this.quote);
-
     this.router.navigate(['/trade-booking'], { 
       state: { quote: this.quote } 
     });
   }
 
   isExpired(): boolean {
-    return this.timeRemaining <= 0;
+    return false; // Always allow booking
   }
 }

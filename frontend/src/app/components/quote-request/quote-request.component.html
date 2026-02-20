@@ -60,7 +60,7 @@
           </div>
 
           <div *ngIf="quote" class="card mt-4">
-            <div class="card-header" [class.bg-warning]="isExpired()" [class.bg-success]="!isExpired()">
+            <div class="card-header bg-success">
               <h5 class="mb-0 text-white">Quote Details</h5>
             </div>
             <div class="card-body">
@@ -90,14 +90,7 @@
                 <div class="col-6"><strong>Rate:</strong></div>
                 <div class="col-6 fs-4 text-primary"><strong>{{ quote.rate | number:'1.6-6' }}</strong></div>
               </div>
-              <div class="row mb-2">
-                <div class="col-6"><strong>Time Remaining:</strong></div>
-                <div class="col-6">
-                  <span [class.text-danger]="timeRemaining <= 10" 
-                        [class.text-warning]="timeRemaining > 10 && timeRemaining <= 20"
-                        [class.text-success]="timeRemaining > 20">
-                    <strong>{{ timeRemaining }}s</strong>
-                  </span>
+              <!-- Time Remaining removed: always allow booking -->
                 </div>
               </div>
 
