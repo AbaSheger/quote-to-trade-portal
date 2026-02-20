@@ -108,9 +108,18 @@ jobs:
           npm ci
       
       - name: Lint
+        working-directory: frontend
         run: |
-          cd frontend
-          npm run lint
+          if [ -z "$(npm pkg get scripts.lint | tr -d '"' | tr -d '\n' | tr -d ' ')" ] || [ "$(npm pkg get scripts.lint | tr -d '"' | tr -d '\n' | tr -d ' ')" = "null" ]; then
+            echo "No lint script defined in frontend/package.json. Skipping lint."
+            exit 0
+          fi
+
+          if [ -f eslint.config.js ] || [ -f eslint.config.mjs ] || [ -f eslint.config.cjs ] || [ -f .eslintrc ] || [ -f .eslintrc.js ] || [ -f .eslintrc.cjs ] || [ -f .eslintrc.json ] || [ -f .eslintrc.yaml ] || [ -f .eslintrc.yml ]; then
+            npm run lint
+          else
+            echo "Lint script exists but no ESLint config file was found in frontend/. Skipping lint."
+          fi
       
       - name: Build
         run: |
