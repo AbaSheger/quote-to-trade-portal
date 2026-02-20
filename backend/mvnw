@@ -199,6 +199,12 @@ if [ -z "$BASE_DIR" ]; then
   exit 1;
 fi
 
+# Prefer a preinstalled Maven when available to avoid wrapper distribution
+# download failures in restricted CI/network environments.
+if command -v mvn >/dev/null 2>&1 && [ "${MVNW_FORCE_WRAPPER}" != "true" ]; then
+  exec mvn "$@"
+fi
+
 ##########################################################################################
 # Extension to allow automatically downloading the maven-wrapper.jar from Maven-central
 # This allows using the maven wrapper in projects that prohibit checking in binary data.
