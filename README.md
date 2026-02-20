@@ -178,14 +178,14 @@ cd frontend
 # Install dependencies
 npm install
 
-# Start development server
+# Start development server (frontend API calls are proxied to http://localhost:8080)
 npm start
 
 # Build for production
 npm run build
 
-# Run linting
-npm run lint
+# Run unit tests
+npm test -- --watch=false
 ```
 
 ## 📊 Database Schema
