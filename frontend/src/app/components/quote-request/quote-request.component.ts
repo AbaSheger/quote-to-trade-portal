@@ -2,6 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FxPortalService } from '../../services/fx-portal.service';
+import { PendingQuoteService } from '../../services/pending-quote.service';
 import { QuoteRequest, QuoteResponse } from '../../models/fx-portal.models';
 import { Router } from '@angular/router';
 
@@ -23,15 +24,15 @@ export class QuoteRequestComponent {
   loading = false;
   error: string | null = null;
   timeRemaining: number = 0;
-  timerInterval: any;
-  quoteReceivedAt: number = 0;
+  timerInterval: ReturnType<typeof setInterval> | null = null;
 
   currencyPairs = ['EUR/USD', 'GBP/USD', 'USD/JPY', 'USD/CHF', 'AUD/USD'];
 
   constructor(
     private fxPortalService: FxPortalService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private pendingQuoteService: PendingQuoteService
   ) { }
 
   ngOnDestroy() {
@@ -53,7 +54,6 @@ export class QuoteRequestComponent {
       next: (response) => {
         this.quote = response;
         this.loading = false;
-        this.quoteReceivedAt = Date.now();
         this.startTimer();
         this.cdr.detectChanges();
       },
@@ -68,19 +68,15 @@ export class QuoteRequestComponent {
   startTimer() {
     if (!this.quote) return;
 
-    const expiresAt = Date.parse(this.quote.expiresAt);
-    const createdAt = Date.parse(this.quote.createdAt);
-    const quoteLifespan = Math.floor((expiresAt - createdAt) / 1000); // seconds
-    const receivedAt = this.quoteReceivedAt;
+    const expiresAtTimestamp = Date.parse(this.quote.expiresAt);
 
     const updateTimer = () => {
       if (!this.quote) return;
-      const elapsed = Math.floor((Date.now() - receivedAt) / 1000);
-      this.timeRemaining = Math.max(0, quoteLifespan - elapsed);
-      // Optionally log for debug:
-      // console.log('DEBUG workaround timer:', { quoteLifespan, elapsed, timeRemaining: this.timeRemaining });
+      const now = Date.now();
+      this.timeRemaining = Math.max(0, Math.floor((expiresAtTimestamp - now) / 1000));
       if (this.timeRemaining <= 0 && this.timerInterval) {
         clearInterval(this.timerInterval);
+        this.timerInterval = null;
       }
     };
 
@@ -90,6 +86,8 @@ export class QuoteRequestComponent {
 
   bookTrade() {
     if (!this.quote || this.timeRemaining <= 0) return;
+
+    this.pendingQuoteService.save(this.quote);
 
     this.router.navigate(['/trade-booking'], { 
       state: { quote: this.quote } 
