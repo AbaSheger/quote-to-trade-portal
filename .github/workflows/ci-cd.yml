@@ -48,6 +48,9 @@ jobs:
           reporter: java-junit
           fail-on-error: false
 
+      - name: List backend test reports
+        run: ls -l backend/target/surefire-reports/
+
   backend-security:
     name: Backend Security Scan
     runs-on: ubuntu-latest
@@ -113,6 +116,9 @@ jobs:
         run: |
           cd frontend
           npm run build -- --configuration production
+
+      - name: List frontend build files
+        run: ls -l frontend/dist/
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
