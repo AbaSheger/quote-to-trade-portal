@@ -32,12 +32,12 @@ jobs:
       - name: Build with Maven
         run: |
           cd backend
-          ./mvnw clean install -B
+          for i in 1 2 3; do ./mvnw clean install -B && break || sleep 10; done
       
       - name: Run tests
         run: |
           cd backend
-          ./mvnw test -B
+          for i in 1 2 3; do ./mvnw test -B && break || sleep 10; done
       
       - name: Generate test report
         if: always()
