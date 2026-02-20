@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { FxPortalService } from '../../services/fx-portal.service';
 import { TradeResponse, PageResponse } from '../../models/fx-portal.models';
 
 @Component({
   selector: 'app-trade-history',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './trade-history.component.html',
   styleUrls: ['./trade-history.component.css']
 })
@@ -32,7 +32,10 @@ export class TradeHistoryComponent implements OnInit {
   sides = ['', 'BUY', 'SELL'];
   statuses = ['', 'BOOKED', 'SETTLED', 'CANCELLED'];
 
-  constructor(private fxPortalService: FxPortalService) { }
+  constructor(
+    private fxPortalService: FxPortalService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.loadTrades();
@@ -54,10 +57,12 @@ export class TradeHistoryComponent implements OnInit {
         this.totalPages = response.totalPages;
         this.totalElements = response.totalElements;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.error = err.error?.message || 'Failed to load trade history';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

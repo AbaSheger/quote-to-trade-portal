@@ -73,6 +73,7 @@ export class TradeBookingComponent implements OnInit {
   }
 
   private isQuoteExpired(quote: QuoteResponse): boolean {
-    return Date.now() >= Date.parse(quote.expiresAt);
+    const expiresAtMs = Date.parse(quote.expiresAt.endsWith('Z') ? quote.expiresAt : quote.expiresAt + 'Z');
+    return Date.now() >= expiresAtMs;
   }
 }

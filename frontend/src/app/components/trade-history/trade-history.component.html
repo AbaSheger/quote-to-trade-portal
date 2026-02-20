@@ -8,31 +8,33 @@
       <div class="row mb-3">
         <div class="col-md-3">
           <label for="filterCurrencyPair" class="form-label">Currency Pair</label>
-          <select class="form-select" id="filterCurrencyPair" [(ngModel)]="currencyPair">
-            <option *ngFor="let pair of currencyPairs" [value]="pair">
+          <select class="form-select" id="filterCurrencyPair"
+                  (change)="currencyPair = $any($event.target).value; applyFilters()">
+            <option *ngFor="let pair of currencyPairs" [value]="pair" [selected]="currencyPair === pair">
               {{ pair || 'All' }}
             </option>
           </select>
         </div>
         <div class="col-md-3">
           <label for="filterSide" class="form-label">Side</label>
-          <select class="form-select" id="filterSide" [(ngModel)]="side">
-            <option *ngFor="let s of sides" [value]="s">
+          <select class="form-select" id="filterSide"
+                  (change)="side = $any($event.target).value; applyFilters()">
+            <option *ngFor="let s of sides" [value]="s" [selected]="side === s">
               {{ s || 'All' }}
             </option>
           </select>
         </div>
         <div class="col-md-3">
           <label for="filterStatus" class="form-label">Status</label>
-          <select class="form-select" id="filterStatus" [(ngModel)]="status">
-            <option *ngFor="let st of statuses" [value]="st">
+          <select class="form-select" id="filterStatus"
+                  (change)="status = $any($event.target).value; applyFilters()">
+            <option *ngFor="let st of statuses" [value]="st" [selected]="status === st">
               {{ st || 'All' }}
             </option>
           </select>
         </div>
         <div class="col-md-3 d-flex align-items-end">
-          <button class="btn btn-primary me-2" (click)="applyFilters()">Apply</button>
-          <button class="btn btn-outline-secondary" (click)="clearFilters()">Clear</button>
+          <button class="btn btn-outline-secondary" (click)="clearFilters()">Clear Filters</button>
         </div>
       </div>
 

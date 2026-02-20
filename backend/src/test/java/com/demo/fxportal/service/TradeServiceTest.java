@@ -128,4 +128,39 @@ class TradeServiceTest {
         verify(quoteRepository, times(1)).findById(quoteId);
         verify(tradeRepository, never()).save(any(Trade.class));
     }
+
+    @Test
+    void bookTrade_withAlreadyBookedQuote_shouldThrowException() {
+        // Given
+        TradeRequest request = TradeRequest.builder().quoteId(quoteId).build();
+        when(quoteRepository.findById(quoteId)).thenReturn(Optional.of(validQuote));
+        when(tradeRepository.existsByQuoteId(quoteId)).thenReturn(true);
+
+        // When & Then
+        assertThatThrownBy(() -> tradeService.bookTrade(request))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("A trade has already been booked for this quote");
+
+        verify(tradeRepository, never()).save(any(Trade.class));
+    }
+
+    @Test
+    void bookTrade_withValidQuote_shouldCopyAllFieldsFromQuote() {
+        // Given
+        TradeRequest request = TradeRequest.builder().quoteId(quoteId).build();
+        when(quoteRepository.findById(quoteId)).thenReturn(Optional.of(validQuote));
+        when(tradeRepository.save(any(Trade.class))).thenReturn(savedTrade);
+
+        // When
+        tradeService.bookTrade(request);
+
+        // Then — verify the saved trade picks up all fields from the quote
+        verify(tradeRepository).save(argThat(trade ->
+                trade.getQuoteId().equals(quoteId) &&
+                trade.getCurrencyPair().equals("EUR/USD") &&
+                trade.getSide() == Side.BUY &&
+                trade.getAmount().compareTo(new BigDecimal("10000.00")) == 0 &&
+                trade.getRate().compareTo(new BigDecimal("1.0850")) == 0
+        ));
+    }
 }

@@ -68,21 +68,20 @@ export class QuoteRequestComponent {
   startTimer() {
     if (!this.quote) return;
 
-    // Use createdAt and expiresAt pair to avoid timezone parsing issues.
-    const createdAtTs = Date.parse(this.quote.createdAt);
-    const expiresAtTs = Date.parse(this.quote.expiresAt);
-    const totalDurationMs = Math.max(0, expiresAtTs - createdAtTs);
+    // Append 'Z' so the server's LocalDateTime string is parsed as UTC,
+    // not as local time (which would cause incorrect elapsed calculations).
+    const toUtcMs = (s: string) => Date.parse(s.endsWith('Z') ? s : s + 'Z');
+    const expiresAtMs = toUtcMs(this.quote.expiresAt);
 
     const updateTimer = () => {
       if (!this.quote) return;
-      const now = Date.now();
-      const elapsed = Math.max(0, now - createdAtTs);
-      const remainingMs = Math.max(0, totalDurationMs - elapsed);
+      const remainingMs = Math.max(0, expiresAtMs - Date.now());
       this.timeRemaining = Math.floor(remainingMs / 1000);
       if (this.timeRemaining <= 0 && this.timerInterval) {
         clearInterval(this.timerInterval);
         this.timerInterval = null;
       }
+      this.cdr.detectChanges();
     };
 
     updateTimer();
