@@ -29,8 +29,8 @@ public class QuoteService {
         // Generate a simulated rate (in real system, would fetch from market data provider)
         BigDecimal rate = generateSimulatedRate(request.getCurrencyPair());
 
-        // Quote expires in 30 seconds
-        LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(30);
+        // Quote expires in 2 minutes
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(2);
 
         Quote quote = Quote.builder()
                 .currencyPair(request.getCurrencyPair())
