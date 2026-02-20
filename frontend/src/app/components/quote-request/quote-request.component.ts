@@ -68,12 +68,17 @@ export class QuoteRequestComponent {
   startTimer() {
     if (!this.quote) return;
 
-    const expiresAtTimestamp = Date.parse(this.quote.expiresAt);
+    // Use createdAt and expiresAt pair to avoid timezone parsing issues.
+    const createdAtTs = Date.parse(this.quote.createdAt);
+    const expiresAtTs = Date.parse(this.quote.expiresAt);
+    const totalDurationMs = Math.max(0, expiresAtTs - createdAtTs);
 
     const updateTimer = () => {
       if (!this.quote) return;
       const now = Date.now();
-      this.timeRemaining = Math.max(0, Math.floor((expiresAtTimestamp - now) / 1000));
+      const elapsed = Math.max(0, now - createdAtTs);
+      const remainingMs = Math.max(0, totalDurationMs - elapsed);
+      this.timeRemaining = Math.floor(remainingMs / 1000);
       if (this.timeRemaining <= 0 && this.timerInterval) {
         clearInterval(this.timerInterval);
         this.timerInterval = null;
@@ -93,6 +98,6 @@ export class QuoteRequestComponent {
   }
 
   isExpired(): boolean {
-    return false; // Always allow booking
+    return this.timeRemaining <= 0;
   }
 }

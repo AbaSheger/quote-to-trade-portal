@@ -17,6 +17,7 @@ export class TradeBookingComponent implements OnInit {
   trade: TradeResponse | null = null;
   loading = false;
   error: string | null = null;
+  expiredWarning: string | null = null;
 
   constructor(
     private fxPortalService: FxPortalService,
@@ -38,9 +39,9 @@ export class TradeBookingComponent implements OnInit {
     }
 
     if (this.isQuoteExpired(this.quote)) {
-      this.pendingQuoteService.clear();
-      this.error = 'Quote has expired. Please request a new quote.';
-      return;
+      // Don't block booking on the frontend when quote expiry is reached.
+      // Show a warning but attempt to book — backend will enforce final validation.
+      this.expiredWarning = 'Quote has expired, attempting to book anyway.';
     }
 
     this.bookTrade();
@@ -76,6 +77,10 @@ export class TradeBookingComponent implements OnInit {
   }
 
   private isQuoteExpired(quote: QuoteResponse): boolean {
-    return Date.parse(quote.expiresAt) <= Date.now();
+    const createdAt = Date.parse(quote.createdAt);
+    const expiresAt = Date.parse(quote.expiresAt);
+    const totalDuration = Math.max(0, expiresAt - createdAt);
+    const elapsed = Math.max(0, Date.now() - createdAt);
+    return elapsed >= totalDuration;
   }
 }
